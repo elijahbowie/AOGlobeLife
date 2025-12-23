@@ -7,9 +7,11 @@ export type ScenarioType =
   | 'follow_up'
   | 'closing'
   | 'spouse_objection'
+  | 'budget_conscious'
   | 'recruiting_cold'
   | 'recruiting_warm'
-  | 'recruiting_career_changer';
+  | 'recruiting_career_changer'
+  | 'recruiting_income';
 
 export interface ProspectPersona {
   id: string;

@@ -98,9 +98,11 @@ export const useChatStore = create<ChatState>((set, get) => ({
       follow_up: `Oh hey, yeah I remember you. Sorry I haven't gotten back to you - it's been crazy at work.`,
       closing: `Okay so we've talked through everything. I think I understand what you're offering. What happens next?`,
       spouse_objection: `Look, I appreciate all the information, but I really can't make this decision without talking to my wife first.`,
+      budget_conscious: `I hear what you're saying about the coverage, but honestly, we're really tight on money right now. I don't see how we can afford another bill.`,
       recruiting_cold: `Oh, you work in insurance? That's interesting. I've always wondered what that's like.`,
       recruiting_warm: `You mentioned something about a career opportunity last time we talked. What's that all about?`,
       recruiting_career_changer: `I'm so burned out at my current job. I've been thinking about making a change but I don't know where to start.`,
+      recruiting_income: `Before I commit to anything, I need to understand exactly how the money works. Walk me through the compensation - and be straight with me, not just the best-case scenarios.`,
     };
 
     set({
@@ -254,6 +256,11 @@ export const useChatStore = create<ChatState>((set, get) => ({
             'Offer to schedule a call with both of them.',
             'Give them talking points for the conversation with their spouse.',
           ],
+          budget_conscious: [
+            'Break down the cost to daily amounts - "less than a coffee."',
+            'Ask what they CAN afford rather than arguing about the price.',
+            'Some coverage is infinitely better than no coverage.',
+          ],
           recruiting_cold: [
             'Lead with lifestyle benefits, not income claims.',
             'Ask about their current situation and what they\'d change.',
@@ -268,6 +275,11 @@ export const useChatStore = create<ChatState>((set, get) => ({
             'Focus on what they want, not what they\'re leaving.',
             'Highlight the training and support available.',
             'Suggest starting part-time to reduce risk.',
+          ],
+          recruiting_income: [
+            'Be transparent about the commission structure - 50% to start.',
+            'Set realistic expectations about year 1 vs years 2-3.',
+            'Emphasize the business-building income (overrides), not just sales.',
           ],
         };
 

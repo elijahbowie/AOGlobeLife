@@ -36,9 +36,11 @@ const scenarioIcons: Record<ScenarioType, LucideIcon> = {
   follow_up: Calendar,
   closing: Handshake,
   spouse_objection: Users,
+  budget_conscious: Briefcase,
   recruiting_cold: UserPlus,
   recruiting_warm: Users,
   recruiting_career_changer: Briefcase,
+  recruiting_income: Briefcase,
 };
 
 export function Coach() {
