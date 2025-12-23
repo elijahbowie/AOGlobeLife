@@ -1204,65 +1204,84 @@ Create a complete, ready-to-use script for this situation.`;
         return errorResponse('Missing required fields: messages, scenario', 400);
       }
 
-      const userMessages = messages.filter((m) => m.role === 'user');
+      // Build conversation transcript
+      const transcript = messages
+        .map((m) => {
+          const role = m.role === 'user' ? 'AGENT' : 'PROSPECT';
+          return `${role}: ${m.content}`;
+        })
+        .join('\n\n');
 
+      const sessionPrompt = `You are a senior AIL field trainer evaluating a complete roleplay session.
+
+SCENARIO TYPE: ${scenario}
+
+FULL CONVERSATION:
+${transcript}
+
+Analyze the ENTIRE conversation and provide comprehensive feedback. Respond in valid JSON format:
+
+{
+  "empathyScore": <0-100>,
+  "objectionHandlingScore": <0-100>,
+  "productKnowledgeScore": <0-100>,
+  "closingScore": <0-100>,
+  "overallScore": <0-100>,
+  "strengths": ["<specific strength with example>", "<strength 2>", "<strength 3>"],
+  "improvements": ["<specific improvement with 'You said... Try...' format>", "<improvement 2>", "<improvement 3>"],
+  "tips": ["<actionable tip for next session>", "<tip 2>", "<tip 3>"],
+  "keyMoment": "<the ONE pivotal moment that shaped the outcome>",
+  "wouldClose": <true/false - would this prospect likely have purchased?>
+}
+
+SCORING CALIBRATION:
+90-100: Exceptional - textbook performance, ready to train others
+80-89: Strong - would likely close, minor refinements
+70-79: Solid - shows promise, clear areas to develop
+60-69: Developing - needs focused practice
+50-59: Learning - multiple areas need work
+Below 50: Needs fundamental coaching
+
+Be honest but constructive. Reference specific moments from the conversation.`;
+
+      const response = await anthropic.messages.create({
+        model: MODEL,
+        max_tokens: 1024,
+        messages: [{ role: 'user', content: sessionPrompt }],
+      });
+
+      const messageContent = response.content[0];
+      const responseText = messageContent.type === 'text' ? messageContent.text : '';
+
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        return jsonResponse(parsed);
+      }
+
+      // Fallback to basic calculation if AI fails
+      const userMessages = messages.filter((m) => m.role === 'user');
       const scores = { empathy: 0, objectionHandling: 0, productKnowledge: 0, closingSkill: 0 };
 
       userMessages.forEach((msg) => {
-        const response = msg.content.toLowerCase();
-        if (response.includes('understand') || response.includes('feel')) scores.empathy += 20;
-        if (response.includes('let me') || response.includes('what if')) scores.objectionHandling += 20;
-        if (response.includes('coverage') || response.includes('benefit')) scores.productKnowledge += 20;
-        if (response.includes('next') || response.includes('forward')) scores.closingSkill += 20;
+        const msgContent = msg.content.toLowerCase();
+        if (msgContent.includes('understand') || msgContent.includes('feel')) scores.empathy += 20;
+        if (msgContent.includes('let me') || msgContent.includes('what if')) scores.objectionHandling += 20;
+        if (msgContent.includes('coverage') || msgContent.includes('benefit')) scores.productKnowledge += 20;
+        if (msgContent.includes('next') || msgContent.includes('forward')) scores.closingSkill += 20;
       });
 
       const messageCount = userMessages.length || 1;
-      const feedback = {
+      return jsonResponse({
         empathyScore: Math.min(100, Math.round(scores.empathy / messageCount + 50)),
         objectionHandlingScore: Math.min(100, Math.round(scores.objectionHandling / messageCount + 50)),
         productKnowledgeScore: Math.min(100, Math.round(scores.productKnowledge / messageCount + 50)),
         closingScore: Math.min(100, Math.round(scores.closingSkill / messageCount + 40)),
-        overallScore: 0,
-        strengths: [] as string[],
-        improvements: [] as string[],
-        tips: [] as string[],
-      };
-
-      feedback.overallScore = Math.round(
-        (feedback.empathyScore + feedback.objectionHandlingScore + feedback.productKnowledgeScore + feedback.closingScore) / 4
-      );
-
-      if (feedback.empathyScore >= 70) {
-        feedback.strengths.push('Good use of empathetic language');
-      } else {
-        feedback.improvements.push("Try to acknowledge the prospect's feelings more directly");
-      }
-
-      if (feedback.objectionHandlingScore >= 70) {
-        feedback.strengths.push('Effective objection handling techniques');
-      } else {
-        feedback.improvements.push('Consider using frameworks like Feel-Felt-Found for objections');
-      }
-
-      if (feedback.productKnowledgeScore >= 70) {
-        feedback.strengths.push('Strong product knowledge demonstration');
-      } else {
-        feedback.improvements.push('Include more specific product benefits in your responses');
-      }
-
-      if (feedback.closingScore >= 70) {
-        feedback.strengths.push('Good closing instincts');
-      } else {
-        feedback.improvements.push('Work on advancing the conversation toward a decision');
-      }
-
-      feedback.tips = [
-        'Practice this scenario type regularly to build confidence',
-        'Record yourself and listen back for improvement areas',
-        'Focus on asking more discovery questions',
-      ];
-
-      return jsonResponse(feedback);
+        overallScore: 60,
+        strengths: ['Completed the session'],
+        improvements: ['AI analysis unavailable - try again'],
+        tips: ['Practice regularly to build confidence'],
+      });
     }
 
     return errorResponse('Not found', 404);

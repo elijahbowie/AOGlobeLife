@@ -82,6 +82,8 @@ interface FeedbackResponse {
   analysis: string;
   improvements: string[];
   detectedTechniques: string[];
+  missedOpportunities: string[];
+  keyMoment: string;
   scoreBreakdown: {
     empathy: number;
     objectionHandling: number;

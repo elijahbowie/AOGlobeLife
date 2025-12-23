@@ -14,6 +14,7 @@ import {
   Clock,
   Star,
   MessageSquare,
+  AlertCircle,
 } from 'lucide-react';
 import { Header } from '../components/layout/Header';
 import { Card, CardHeader, CardTitle, Button, Badge, Progress, CircularProgress, Tabs, TabsList, TabsTrigger, TabsContent, DifficultyBadge, Textarea, CategoryFilter } from '../components/ui';
@@ -22,6 +23,7 @@ import { getObjections, getObjectionById } from '../data/objections';
 import { Objection } from '../types';
 import { cn } from '../utils/cn';
 import { getMasteryLevel } from '../utils/formatters';
+import { apiService, ApiError } from '../services/api';
 
 const categoryLabels = {
   price: 'Price',
@@ -204,36 +206,60 @@ function ObjectionsList({ objections }: { objections: Objection[] }) {
 function ObjectionDetail({ objection, onBack }: { objection: Objection; onBack: () => void }) {
   const [practicing, setPracticing] = useState(false);
   const [userResponse, setUserResponse] = useState('');
-  const [feedback, setFeedback] = useState<{ score: number; analysis: string; improvements: string[] } | null>(null);
+  const [feedback, setFeedback] = useState<{
+    score: number;
+    analysis: string;
+    improvements: string[];
+    detectedTechniques?: string[];
+    missedOpportunities?: string[];
+    keyMoment?: string;
+    scoreBreakdown?: {
+      empathy: number;
+      objectionHandling: number;
+      productKnowledge: number;
+      closingSkill: number;
+    };
+  } | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const { objectionProgress, updateObjectionProgress } = useTrainingStore();
   const { addXP } = useUserStore();
   const progress = objectionProgress[objection.id];
 
-  const handleSubmitResponse = () => {
+  const handleSubmitResponse = async () => {
     if (!userResponse.trim()) return;
 
     setIsAnalyzing(true);
+    setError(null);
 
-    // Simulate analysis (would connect to backend)
-    setTimeout(() => {
-      const score = Math.floor(Math.random() * 40) + 60;
-      const mockFeedback = {
-        score,
-        analysis: "Good job acknowledging their concern! You showed empathy by validating their feelings. Consider adding more specific benefits to strengthen your response.",
-        improvements: [
-          "Try breaking down the cost to a daily amount",
-          "Include a comparison to everyday expenses",
-          "Ask a question to keep the conversation going"
-        ]
-      };
+    try {
+      const response = await apiService.analyzeResponse({
+        objection: objection.text,
+        userResponse: userResponse,
+        context: `Objection category: ${objection.category}. This is a ${objection.difficulty === 1 ? 'beginner' : objection.difficulty === 2 ? 'intermediate' : 'advanced'} level objection.`,
+      });
 
-      setFeedback(mockFeedback);
+      setFeedback({
+        score: response.score,
+        analysis: response.analysis,
+        improvements: response.improvements,
+        detectedTechniques: response.detectedTechniques,
+        missedOpportunities: (response as any).missedOpportunities,
+        keyMoment: (response as any).keyMoment,
+        scoreBreakdown: response.scoreBreakdown,
+      });
+      updateObjectionProgress(objection.id, response.score, userResponse);
+      addXP(Math.round(response.score * 0.5));
+    } catch (err) {
+      if (err instanceof ApiError) {
+        setError(err.message);
+      } else {
+        setError('Failed to analyze response. Please try again.');
+      }
+    } finally {
       setIsAnalyzing(false);
-      updateObjectionProgress(objection.id, score, userResponse);
-      addXP(25);
-    }, 1500);
+    }
   };
 
   const resetPractice = () => {
@@ -314,11 +340,32 @@ function ObjectionDetail({ objection, onBack }: { objection: Objection; onBack: 
               </Card>
             )}
 
+            {/* Error Display */}
+            {error && (
+              <Card padding="lg" className="border-red-500/30 bg-red-500/5">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-medium text-red-400 mb-1">Error</h3>
+                    <p className="text-sm text-gray-300">{error}</p>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setError(null)}
+                      className="mt-2 text-red-400"
+                    >
+                      Dismiss
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            )}
+
             {/* Feedback */}
             {feedback && (
               <Card padding="lg">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-lg font-semibold text-white">Feedback</h2>
+                  <h2 className="text-lg font-semibold text-white">AI Feedback</h2>
                   <CircularProgress
                     value={feedback.score}
                     size={60}
@@ -326,6 +373,27 @@ function ObjectionDetail({ objection, onBack }: { objection: Objection; onBack: 
                     variant={feedback.score >= 80 ? 'success' : feedback.score >= 60 ? 'warning' : 'danger'}
                   />
                 </div>
+
+                {/* Score Breakdown */}
+                {feedback.scoreBreakdown && (
+                  <div className="grid grid-cols-4 gap-3 mb-4">
+                    {[
+                      { label: 'Empathy', value: feedback.scoreBreakdown.empathy },
+                      { label: 'Objection', value: feedback.scoreBreakdown.objectionHandling },
+                      { label: 'Product', value: feedback.scoreBreakdown.productKnowledge },
+                      { label: 'Closing', value: feedback.scoreBreakdown.closingSkill },
+                    ].map((item) => (
+                      <div key={item.label} className="text-center p-2 rounded-lg bg-apex-700/30">
+                        <p className="text-xs text-gray-400 mb-1">{item.label}</p>
+                        <p className={cn(
+                          'text-lg font-bold',
+                          item.value >= 80 ? 'text-emerald-400' :
+                          item.value >= 60 ? 'text-gold-400' : 'text-red-400'
+                        )}>{item.value}%</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                 <div className="p-4 rounded-xl bg-apex-700/50 border border-apex-500/30 mb-4">
                   <p className="text-sm text-gray-300">Your response:</p>
@@ -337,7 +405,15 @@ function ObjectionDetail({ objection, onBack }: { objection: Objection; onBack: 
                   <p className="text-gray-300">{feedback.analysis}</p>
                 </div>
 
-                <div className="mb-6">
+                {/* Key Moment */}
+                {feedback.keyMoment && (
+                  <div className="mb-4 p-4 rounded-xl bg-gold-400/10 border border-gold-400/30">
+                    <h3 className="text-sm font-medium text-gold-400 mb-2">Key Moment</h3>
+                    <p className="text-gray-300">{feedback.keyMoment}</p>
+                  </div>
+                )}
+
+                <div className="mb-4">
                   <h3 className="text-sm font-medium text-gold-400 mb-2">Areas for Improvement</h3>
                   <ul className="space-y-2">
                     {feedback.improvements.map((item, i) => (
@@ -348,6 +424,33 @@ function ObjectionDetail({ objection, onBack }: { objection: Objection; onBack: 
                     ))}
                   </ul>
                 </div>
+
+                {/* Detected Techniques */}
+                {feedback.detectedTechniques && feedback.detectedTechniques.length > 0 && (
+                  <div className="mb-4">
+                    <h3 className="text-sm font-medium text-emerald-400 mb-2">Techniques You Used</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {feedback.detectedTechniques.map((tech, i) => (
+                        <Badge key={i} variant="success" size="sm">{tech}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Missed Opportunities */}
+                {feedback.missedOpportunities && feedback.missedOpportunities.length > 0 && (
+                  <div className="mb-6">
+                    <h3 className="text-sm font-medium text-orange-400 mb-2">Missed Opportunities</h3>
+                    <ul className="space-y-2">
+                      {feedback.missedOpportunities.map((item, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
+                          <Star className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 <Button onClick={resetPractice} fullWidth>
                   Practice Again
@@ -464,6 +567,7 @@ function RapidFireMode({ objections, onExit }: { objections: Objection[]; onExit
   const [scores, setScores] = useState<number[]>([]);
   const [isComplete, setIsComplete] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [roundObjections, setRoundObjections] = useState(() =>
     [...objections].sort(() => Math.random() - 0.5).slice(0, 5)
   );
@@ -475,6 +579,7 @@ function RapidFireMode({ objections, onExit }: { objections: Objection[]; onExit
     setScores([]);
     setIsComplete(false);
     setIsAnalyzing(false);
+    setError(null);
     setRoundObjections([...objections].sort(() => Math.random() - 0.5).slice(0, 5));
   };
 
@@ -482,13 +587,20 @@ function RapidFireMode({ objections, onExit }: { objections: Objection[]; onExit
   const { recordRapidFireSession, updateObjectionProgress } = useTrainingStore();
   const { addXP, addActivity } = useUserStore();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!userResponse.trim()) return;
 
     setIsAnalyzing(true);
+    setError(null);
 
-    setTimeout(() => {
-      const score = Math.floor(Math.random() * 40) + 60;
+    try {
+      const response = await apiService.analyzeResponse({
+        objection: currentObjection.text,
+        userResponse: userResponse,
+        context: `Rapid Fire mode. Objection category: ${currentObjection.category}.`,
+      });
+
+      const score = response.score;
       const newScores = [...scores, score];
       setScores(newScores);
 
@@ -523,7 +635,14 @@ function RapidFireMode({ objections, onExit }: { objections: Objection[]; onExit
         setIsComplete(true);
         setIsAnalyzing(false);
       }
-    }, 1000);
+    } catch (err) {
+      setIsAnalyzing(false);
+      if (err instanceof ApiError) {
+        setError(err.message);
+      } else {
+        setError('Failed to analyze response. Please try again.');
+      }
+    }
   };
 
   if (isComplete) {
@@ -602,6 +721,23 @@ function RapidFireMode({ objections, onExit }: { objections: Objection[]; onExit
           </Button>
         </div>
       </div>
+
+      {/* Error Display */}
+      {error && (
+        <div className="max-w-2xl mx-auto mb-4">
+          <Card padding="md" className="border-red-500/30 bg-red-500/5">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+              <div className="flex-1">
+                <p className="text-sm text-red-400">{error}</p>
+              </div>
+              <Button variant="ghost" size="sm" onClick={() => setError(null)} className="text-red-400">
+                Dismiss
+              </Button>
+            </div>
+          </Card>
+        </div>
+      )}
 
       {/* Current Objection */}
       <div className="max-w-2xl mx-auto">

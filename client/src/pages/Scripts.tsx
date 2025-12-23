@@ -16,12 +16,15 @@ import {
   Mic,
   Star,
   Clock,
+  AlertCircle,
+  Lightbulb,
 } from 'lucide-react';
 import { Header } from '../components/layout/Header';
 import { Card, CardHeader, CardTitle, Button, Badge, Input, Textarea, Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter, Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui';
 import { getScripts, getScriptById } from '../data/scripts';
 import { Script, ScriptCategory } from '../types';
 import { cn } from '../utils/cn';
+import { apiService, ApiError } from '../services/api';
 
 const categoryLabels: Record<ScriptCategory, string> = {
   cold_call: 'Cold Call',
@@ -438,31 +441,39 @@ function ScriptBuilderModal({
   const [tone, setTone] = useState<'professional' | 'friendly' | 'empathetic'>('professional');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedScript, setGeneratedScript] = useState<string | null>(null);
+  const [tips, setTips] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!situation.trim()) return;
 
     setIsGenerating(true);
+    setError(null);
 
-    // Simulate AI generation
-    setTimeout(() => {
-      const mockScript = `Hi [Name], this is [Your Name] from American Income Life. I'm calling because you recently inquired about the supplemental benefits available through your [Union/Association].
+    try {
+      const response = await apiService.generateScript({
+        situation,
+        tone,
+      });
 
-I'd love to take just a few minutes to explain the no-cost benefits you're already entitled to, and show you some optional coverage that many of your fellow members have found valuable.
-
-Do you have about 15 minutes sometime this week where we could sit down together? I can come to your home or meet you somewhere convenient.
-
-[If they hesitate]
-I understand you're busy. These benefits are provided at no cost to you, and I'd hate for you to miss out on something you're already eligible for. Would [Day] at [Time] work, or is [Alternative] better?`;
-
-      setGeneratedScript(mockScript);
+      setGeneratedScript(response.script);
+      setTips(response.tips || []);
+    } catch (err) {
+      if (err instanceof ApiError) {
+        setError(err.message);
+      } else {
+        setError('Failed to generate script. Please try again.');
+      }
+    } finally {
       setIsGenerating(false);
-    }, 2000);
+    }
   };
 
   const handleReset = () => {
     setSituation('');
     setGeneratedScript(null);
+    setTips([]);
+    setError(null);
   };
 
   return (
@@ -475,6 +486,21 @@ I understand you're busy. These benefits are provided at no cost to you, and I'd
       </ModalHeader>
 
       <ModalBody className="space-y-6">
+        {/* Error Display */}
+        {error && (
+          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+              <div className="flex-1">
+                <p className="text-sm text-red-400">{error}</p>
+              </div>
+              <Button variant="ghost" size="sm" onClick={() => setError(null)} className="text-red-400">
+                Dismiss
+              </Button>
+            </div>
+          </div>
+        )}
+
         {!generatedScript ? (
           <>
             <div>
@@ -512,9 +538,12 @@ I understand you're busy. These benefits are provided at no cost to you, and I'd
             </div>
           </>
         ) : (
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-white">Generated Script</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-white flex items-center gap-2">
+                <Wand2 className="w-4 h-4 text-gold-400" />
+                AI-Generated Script
+              </h3>
               <Button
                 variant="ghost"
                 size="sm"
@@ -526,9 +555,27 @@ I understand you're busy. These benefits are provided at no cost to you, and I'd
                 Copy
               </Button>
             </div>
-            <div className="p-4 rounded-xl bg-apex-700/30 border border-apex-500/30 font-mono text-sm leading-relaxed whitespace-pre-wrap text-gray-300">
+            <div className="p-4 rounded-xl bg-apex-700/30 border border-apex-500/30 font-mono text-sm leading-relaxed whitespace-pre-wrap text-gray-300 max-h-[400px] overflow-y-auto">
               {generatedScript}
             </div>
+
+            {/* Tips */}
+            {tips.length > 0 && (
+              <div className="p-4 rounded-xl bg-gold-400/10 border border-gold-400/30">
+                <h4 className="text-sm font-medium text-gold-400 mb-2 flex items-center gap-2">
+                  <Lightbulb className="w-4 h-4" />
+                  Tips for Delivery
+                </h4>
+                <ul className="space-y-1">
+                  {tips.map((tip, i) => (
+                    <li key={i} className="text-sm text-gray-300 flex items-start gap-2">
+                      <Star className="w-3 h-3 text-gold-400 flex-shrink-0 mt-1" />
+                      {tip}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         )}
       </ModalBody>
