@@ -1,0 +1,396 @@
+{
+  "project": "Apex Sales Academy",
+  "description": "AI-powered sales training platform for AO GlobeLife agents",
+  "lastUpdated": "2024-12-22",
+  "features": [
+    {
+      "id": "F001",
+      "name": "Project Infrastructure",
+      "description": "React + Vite + TypeScript + Tailwind setup with proper folder structure",
+      "status": "failing",
+      "priority": 1,
+      "dependencies": []
+    },
+    {
+      "id": "F002",
+      "name": "Design System & Theme",
+      "description": "Dark luxury theme with gold accents, all UI components (Button, Card, ProgressBar, Badge, Modal, Input)",
+      "status": "failing",
+      "priority": 2,
+      "dependencies": ["F001"]
+    },
+    {
+      "id": "F003",
+      "name": "Layout & Navigation",
+      "description": "Sidebar navigation, header with notifications/streak, responsive layout shell",
+      "status": "failing",
+      "priority": 3,
+      "dependencies": ["F002"]
+    },
+    {
+      "id": "F004",
+      "name": "Routing System",
+      "description": "React Router v6 with all page routes configured",
+      "status": "failing",
+      "priority": 4,
+      "dependencies": ["F003"]
+    },
+    {
+      "id": "F005",
+      "name": "Zustand State Management",
+      "description": "User store, chat store, progress store, leaderboard store with TypeScript types",
+      "status": "failing",
+      "priority": 5,
+      "dependencies": ["F001"]
+    },
+    {
+      "id": "F006",
+      "name": "Data Layer - Products",
+      "description": "Complete AIL product catalog with all products, features, objections, selling points",
+      "status": "failing",
+      "priority": 6,
+      "dependencies": ["F001"]
+    },
+    {
+      "id": "F007",
+      "name": "Data Layer - Objections",
+      "description": "All 10 common objections with frameworks, scripts, and practice content",
+      "status": "failing",
+      "priority": 7,
+      "dependencies": ["F001"]
+    },
+    {
+      "id": "F008",
+      "name": "Data Layer - Scripts",
+      "description": "Complete script library with cold call, home visit, closing, follow-up scripts",
+      "status": "failing",
+      "priority": 8,
+      "dependencies": ["F001"]
+    },
+    {
+      "id": "F009",
+      "name": "Data Layer - Scenarios",
+      "description": "AI roleplay scenarios with prospect personas (Mike Thompson, etc.)",
+      "status": "failing",
+      "priority": 9,
+      "dependencies": ["F001"]
+    },
+    {
+      "id": "F010",
+      "name": "Data Layer - Ranks & Achievements",
+      "description": "AO GlobeLife rank progression and achievement/badge system",
+      "status": "failing",
+      "priority": 10,
+      "dependencies": ["F001"]
+    },
+    {
+      "id": "F011",
+      "name": "Dashboard Page",
+      "description": "Stats cards, skill progress, daily challenge, activity feed, achievements display",
+      "status": "failing",
+      "priority": 11,
+      "dependencies": ["F003", "F005", "F010"]
+    },
+    {
+      "id": "F012",
+      "name": "AI Coach - Scenario Selection",
+      "description": "Scenario cards with difficulty, descriptions, and selection UI",
+      "status": "failing",
+      "priority": 12,
+      "dependencies": ["F003", "F009"]
+    },
+    {
+      "id": "F013",
+      "name": "AI Coach - Chat Interface",
+      "description": "Message bubbles, typing indicator, prospect info panel, input with send/hint/voice buttons",
+      "status": "failing",
+      "priority": 13,
+      "dependencies": ["F012", "F005"]
+    },
+    {
+      "id": "F014",
+      "name": "AI Coach - Live Feedback Panel",
+      "description": "Real-time scoring for empathy, objection handling, product knowledge, closing",
+      "status": "failing",
+      "priority": 14,
+      "dependencies": ["F013"]
+    },
+    {
+      "id": "F015",
+      "name": "Product Knowledge - Category View",
+      "description": "Product categories (Life, Supplemental Health, Accident) with mastery progress",
+      "status": "failing",
+      "priority": 15,
+      "dependencies": ["F003", "F006"]
+    },
+    {
+      "id": "F016",
+      "name": "Product Knowledge - Learning Modules",
+      "description": "AI-generated explanations, key points, selling tips for each product",
+      "status": "failing",
+      "priority": 16,
+      "dependencies": ["F015"]
+    },
+    {
+      "id": "F017",
+      "name": "Product Knowledge - Quiz System",
+      "description": "Multiple choice quizzes with explanations, scoring, and progress tracking",
+      "status": "failing",
+      "priority": 17,
+      "dependencies": ["F016", "F005"]
+    },
+    {
+      "id": "F018",
+      "name": "Objection Handling - Mastery Grid",
+      "description": "All 10 objections displayed with star ratings, mastery percentages, practice buttons",
+      "status": "failing",
+      "priority": 18,
+      "dependencies": ["F003", "F007"]
+    },
+    {
+      "id": "F019",
+      "name": "Objection Handling - Practice Mode",
+      "description": "Individual objection practice with AI feedback and framework display",
+      "status": "failing",
+      "priority": 19,
+      "dependencies": ["F018", "F005"]
+    },
+    {
+      "id": "F020",
+      "name": "Objection Handling - Rapid Fire Mode",
+      "description": "Timed objection responses (30 seconds), scoring, streak tracking",
+      "status": "failing",
+      "priority": 20,
+      "dependencies": ["F019"]
+    },
+    {
+      "id": "F021",
+      "name": "Script Library - Script List",
+      "description": "All scripts displayed with categories, practice buttons, search/filter",
+      "status": "failing",
+      "priority": 21,
+      "dependencies": ["F003", "F008"]
+    },
+    {
+      "id": "F022",
+      "name": "Script Library - Script Builder",
+      "description": "AI-powered custom script generation based on situation input",
+      "status": "failing",
+      "priority": 22,
+      "dependencies": ["F021"]
+    },
+    {
+      "id": "F023",
+      "name": "Script Library - Pitch Practice",
+      "description": "Practice delivering scripts with AI feedback on delivery",
+      "status": "failing",
+      "priority": 23,
+      "dependencies": ["F021"]
+    },
+    {
+      "id": "F024",
+      "name": "Recruiting Training - Journey Tracker",
+      "description": "Current rank, coded agents progress, requirements for next level",
+      "status": "failing",
+      "priority": 24,
+      "dependencies": ["F003", "F010"]
+    },
+    {
+      "id": "F025",
+      "name": "Recruiting Training - Scenarios",
+      "description": "Cold recruit, warm market, career changer roleplay scenarios",
+      "status": "failing",
+      "priority": 25,
+      "dependencies": ["F024", "F009"]
+    },
+    {
+      "id": "F026",
+      "name": "Recruiting Training - Opportunity Pitch",
+      "description": "Key talking points display and practice for AO opportunity",
+      "status": "failing",
+      "priority": 26,
+      "dependencies": ["F025"]
+    },
+    {
+      "id": "F027",
+      "name": "Recruiting Training - Objection Handling",
+      "description": "Recruiting-specific objections (pyramid scheme, no experience, etc.)",
+      "status": "failing",
+      "priority": 27,
+      "dependencies": ["F025"]
+    },
+    {
+      "id": "F028",
+      "name": "Leaderboard - Rankings Table",
+      "description": "Agency leaderboard with XP, rank badges, streaks, filtering",
+      "status": "failing",
+      "priority": 28,
+      "dependencies": ["F003", "F005"]
+    },
+    {
+      "id": "F029",
+      "name": "Leaderboard - Achievements Gallery",
+      "description": "All achievements displayed with earned/locked status, progress",
+      "status": "failing",
+      "priority": 29,
+      "dependencies": ["F028", "F010"]
+    },
+    {
+      "id": "F030",
+      "name": "Leaderboard - Agency Stats",
+      "description": "Total training hours, active agents, average scores, trends",
+      "status": "failing",
+      "priority": 30,
+      "dependencies": ["F028"]
+    },
+    {
+      "id": "F031",
+      "name": "Onboarding - Welcome Flow",
+      "description": "Multi-step onboarding: welcome, profile setup, rank selection, skill assessment",
+      "status": "failing",
+      "priority": 31,
+      "dependencies": ["F003", "F005"]
+    },
+    {
+      "id": "F032",
+      "name": "Settings Page",
+      "description": "Profile editing, notification preferences, theme options",
+      "status": "failing",
+      "priority": 32,
+      "dependencies": ["F003", "F005"]
+    },
+    {
+      "id": "F033",
+      "name": "Express Backend - Server Setup",
+      "description": "Express + TypeScript server with CORS, routing structure",
+      "status": "failing",
+      "priority": 33,
+      "dependencies": []
+    },
+    {
+      "id": "F034",
+      "name": "Express Backend - Claude Integration",
+      "description": "Anthropic SDK integration with streaming support",
+      "status": "failing",
+      "priority": 34,
+      "dependencies": ["F033"]
+    },
+    {
+      "id": "F035",
+      "name": "Express Backend - Roleplay API",
+      "description": "/api/chat/roleplay endpoint with persona system and feedback",
+      "status": "failing",
+      "priority": 35,
+      "dependencies": ["F034"]
+    },
+    {
+      "id": "F036",
+      "name": "Express Backend - Coach API",
+      "description": "/api/chat/coach endpoint for product explanations and tips",
+      "status": "failing",
+      "priority": 36,
+      "dependencies": ["F034"]
+    },
+    {
+      "id": "F037",
+      "name": "Express Backend - Script Builder API",
+      "description": "/api/chat/script-builder endpoint for AI script generation",
+      "status": "failing",
+      "priority": 37,
+      "dependencies": ["F034"]
+    },
+    {
+      "id": "F038",
+      "name": "Express Backend - Analysis API",
+      "description": "/api/chat/analyze-response endpoint for objection response scoring",
+      "status": "failing",
+      "priority": 38,
+      "dependencies": ["F034"]
+    },
+    {
+      "id": "F039",
+      "name": "AI Prompts - Sales Coach System",
+      "description": "Complete system prompts for sales coaching with AO GlobeLife context",
+      "status": "failing",
+      "priority": 39,
+      "dependencies": ["F034"]
+    },
+    {
+      "id": "F040",
+      "name": "AI Prompts - Prospect Personas",
+      "description": "All prospect personas with backgrounds, personalities, objection patterns",
+      "status": "failing",
+      "priority": 40,
+      "dependencies": ["F034"]
+    },
+    {
+      "id": "F041",
+      "name": "AI Prompts - Feedback Analysis",
+      "description": "Prompts for scoring empathy, objection handling, product knowledge, closing",
+      "status": "failing",
+      "priority": 41,
+      "dependencies": ["F034"]
+    },
+    {
+      "id": "F042",
+      "name": "Frontend-Backend Integration",
+      "description": "API service layer connecting React frontend to Express backend",
+      "status": "failing",
+      "priority": 42,
+      "dependencies": ["F013", "F035", "F036", "F037", "F038"]
+    },
+    {
+      "id": "F043",
+      "name": "XP & Level System",
+      "description": "XP calculations, level progression, rewards for all activities",
+      "status": "failing",
+      "priority": 43,
+      "dependencies": ["F005", "F010"]
+    },
+    {
+      "id": "F044",
+      "name": "Streak System",
+      "description": "Daily streak tracking, streak bonuses, streak display",
+      "status": "failing",
+      "priority": 44,
+      "dependencies": ["F005"]
+    },
+    {
+      "id": "F045",
+      "name": "Daily Challenges",
+      "description": "Daily challenge generation, tracking, rewards",
+      "status": "failing",
+      "priority": 45,
+      "dependencies": ["F011", "F043"]
+    },
+    {
+      "id": "F046",
+      "name": "Animations & Polish",
+      "description": "Framer Motion animations for page transitions, card hovers, feedback",
+      "status": "failing",
+      "priority": 46,
+      "dependencies": ["F002"]
+    },
+    {
+      "id": "F047",
+      "name": "Responsive Design",
+      "description": "Mobile-friendly layouts for all pages",
+      "status": "failing",
+      "priority": 47,
+      "dependencies": ["F003"]
+    },
+    {
+      "id": "F048",
+      "name": "Error Handling & Loading States",
+      "description": "Loading spinners, error messages, empty states for all components",
+      "status": "failing",
+      "priority": 48,
+      "dependencies": ["F002"]
+    }
+  ],
+  "completionCriteria": {
+    "passing": "All features must have status 'passing' with manual verification",
+    "minimumScore": 90,
+    "requiredFeatures": ["F001-F048"]
+  }
+}
