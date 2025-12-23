@@ -224,6 +224,18 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
           </TabsList>
 
           <TabsContent value="learn">
+            {modules.length === 0 ? (
+              <Card padding="lg" className="text-center py-12">
+                <BookOpen className="w-12 h-12 text-gray-600 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-white mb-2">Learning Modules Coming Soon</h3>
+                <p className="text-gray-400 mb-4">
+                  Detailed learning modules for {product.name} are being developed.
+                </p>
+                <p className="text-sm text-gray-500">
+                  In the meantime, check out the Quick Reference tab for key product information.
+                </p>
+              </Card>
+            ) : (
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
               {/* Module Navigation - horizontal scroll on mobile, vertical on lg+ */}
               <div className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 -mx-3 px-3 lg:mx-0 lg:px-0 scrollbar-hide lg:space-y-2">
@@ -346,10 +358,11 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
                 </Card>
               </div>
             </div>
+            )}
           </TabsContent>
 
           <TabsContent value="quiz">
-            {quiz && (
+            {quiz ? (
               <ProductQuiz
                 quiz={quiz}
                 onComplete={(score, passed) => {
@@ -363,6 +376,14 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
                   });
                 }}
               />
+            ) : (
+              <Card padding="lg" className="text-center py-12">
+                <Trophy className="w-12 h-12 text-gray-600 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-white mb-2">Quiz Coming Soon</h3>
+                <p className="text-gray-400">
+                  A knowledge quiz for {product.name} is being developed.
+                </p>
+              </Card>
             )}
           </TabsContent>
 

@@ -132,6 +132,13 @@ export function Coach() {
     navigate('/coach');
   };
 
+  // Cancel scenario without awarding XP (back button)
+  const handleCancelScenario = () => {
+    endScenario();
+    setSessionTime(0);
+    navigate('/coach');
+  };
+
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isLoading || isStreaming || !activeScenario || !activePersona) return;
 
@@ -277,8 +284,9 @@ export function Coach() {
       <div className="h-14 sm:h-16 bg-apex-800/80 backdrop-blur-xl border-b border-apex-600/50 flex items-center justify-between px-3 sm:px-6 flex-shrink-0">
         <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           <button
-            onClick={handleEndScenario}
+            onClick={handleCancelScenario}
             className="p-2 rounded-xl bg-apex-700/50 text-gray-400 hover:text-white hover:bg-apex-700 transition-colors flex-shrink-0"
+            title="Go back"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>

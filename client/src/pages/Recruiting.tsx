@@ -160,46 +160,46 @@ export function Recruiting() {
         subtitle="Build your team and grow your agency"
       />
 
-      <div className="p-6">
-        {/* Stats Row */}
-        <div className="grid grid-cols-4 gap-4 mb-8">
-          <Card className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-purple-400/10 flex items-center justify-center">
-              <Users className="w-6 h-6 text-purple-400" />
+      <div className="p-3 sm:p-6">
+        {/* Stats Row - 2 cols mobile, 4 cols desktop */}
+        <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+          <Card className="flex items-center gap-3 sm:gap-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-purple-400/10 flex items-center justify-center flex-shrink-0">
+              <Users className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-white">{recruitingStats.codedAgents}</p>
-              <p className="text-sm text-gray-400">Coded Agents</p>
-            </div>
-          </Card>
-
-          <Card className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gold-400/10 flex items-center justify-center">
-              <Target className="w-6 h-6 text-gold-400" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-white">{recruitingStats.targetAgents}</p>
-              <p className="text-sm text-gray-400">Target This Quarter</p>
+            <div className="min-w-0">
+              <p className="text-lg sm:text-2xl font-bold text-white">{recruitingStats.codedAgents}</p>
+              <p className="text-xs sm:text-sm text-gray-400 truncate">Coded Agents</p>
             </div>
           </Card>
 
-          <Card className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-emerald-400/10 flex items-center justify-center">
-              <UserPlus className="w-6 h-6 text-emerald-400" />
+          <Card className="flex items-center gap-3 sm:gap-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gold-400/10 flex items-center justify-center flex-shrink-0">
+              <Target className="w-5 h-5 sm:w-6 sm:h-6 text-gold-400" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-white">{recruitingStats.recruitsThisMonth}</p>
-              <p className="text-sm text-gray-400">This Month</p>
+            <div className="min-w-0">
+              <p className="text-lg sm:text-2xl font-bold text-white">{recruitingStats.targetAgents}</p>
+              <p className="text-xs sm:text-sm text-gray-400 truncate">Target This Quarter</p>
             </div>
           </Card>
 
-          <Card className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-400/10 flex items-center justify-center">
-              <MessageSquare className="w-6 h-6 text-blue-400" />
+          <Card className="flex items-center gap-3 sm:gap-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-400/10 flex items-center justify-center flex-shrink-0">
+              <UserPlus className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-400" />
             </div>
-            <div>
-              <p className="text-2xl font-bold text-white">{recruitingStats.scenariosCompleted}</p>
-              <p className="text-sm text-gray-400">Scenarios Practiced</p>
+            <div className="min-w-0">
+              <p className="text-lg sm:text-2xl font-bold text-white">{recruitingStats.recruitsThisMonth}</p>
+              <p className="text-xs sm:text-sm text-gray-400 truncate">This Month</p>
+            </div>
+          </Card>
+
+          <Card className="flex items-center gap-3 sm:gap-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-blue-400/10 flex items-center justify-center flex-shrink-0">
+              <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-lg sm:text-2xl font-bold text-white">{recruitingStats.scenariosCompleted}</p>
+              <p className="text-xs sm:text-sm text-gray-400 truncate">Scenarios Practiced</p>
             </div>
           </Card>
         </div>
@@ -219,9 +219,9 @@ export function Recruiting() {
           </TabsList>
 
           <TabsContent value="overview">
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
               {/* Progress to Next Level */}
-              <Card padding="lg" glow className="col-span-2">
+              <Card padding="lg" glow className="lg:col-span-2">
                 <CardHeader>
                   <CardTitle>Path to Leadership</CardTitle>
                 </CardHeader>
@@ -236,18 +236,18 @@ export function Recruiting() {
                   />
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="p-4 rounded-xl bg-apex-700/30 border border-apex-500/30 text-center">
-                    <p className="text-2xl font-bold text-gold-400 mb-1">5</p>
+                <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                  <div className="p-2 sm:p-4 rounded-xl bg-apex-700/30 border border-apex-500/30 text-center">
+                    <p className="text-lg sm:text-2xl font-bold text-gold-400 mb-1">5</p>
                     <p className="text-xs text-gray-400">Agents Needed</p>
                   </div>
-                  <div className="p-4 rounded-xl bg-apex-700/30 border border-apex-500/30 text-center">
-                    <p className="text-2xl font-bold text-emerald-400 mb-1">10%</p>
-                    <p className="text-xs text-gray-400">Override Commission</p>
+                  <div className="p-2 sm:p-4 rounded-xl bg-apex-700/30 border border-apex-500/30 text-center">
+                    <p className="text-lg sm:text-2xl font-bold text-emerald-400 mb-1">10%</p>
+                    <p className="text-xs text-gray-400">Override</p>
                   </div>
-                  <div className="p-4 rounded-xl bg-apex-700/30 border border-apex-500/30 text-center">
-                    <p className="text-2xl font-bold text-purple-400 mb-1">$2K+</p>
-                    <p className="text-xs text-gray-400">Monthly Bonus Potential</p>
+                  <div className="p-2 sm:p-4 rounded-xl bg-apex-700/30 border border-apex-500/30 text-center">
+                    <p className="text-lg sm:text-2xl font-bold text-purple-400 mb-1">$2K+</p>
+                    <p className="text-xs text-gray-400">Monthly Bonus</p>
                   </div>
                 </div>
               </Card>
@@ -285,11 +285,11 @@ export function Recruiting() {
             </div>
 
             {/* Benefits of Building a Team */}
-            <Card padding="lg" className="mt-6">
+            <Card padding="lg" className="mt-4 sm:mt-6">
               <CardHeader>
                 <CardTitle>Why Build a Team?</CardTitle>
               </CardHeader>
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 {[
                   {
                     icon: DollarSign,
@@ -320,12 +320,12 @@ export function Recruiting() {
                     bg: 'bg-purple-400/10',
                   },
                 ].map((benefit, i) => (
-                  <div key={i} className="p-4 rounded-xl bg-apex-700/30 border border-apex-500/30">
-                    <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center mb-3', benefit.bg)}>
-                      <benefit.icon className={cn('w-5 h-5', benefit.color)} />
+                  <div key={i} className="p-3 sm:p-4 rounded-xl bg-apex-700/30 border border-apex-500/30">
+                    <div className={cn('w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center mb-2 sm:mb-3', benefit.bg)}>
+                      <benefit.icon className={cn('w-4 h-4 sm:w-5 sm:h-5', benefit.color)} />
                     </div>
-                    <h3 className="font-semibold text-white mb-1">{benefit.title}</h3>
-                    <p className="text-sm text-gray-400">{benefit.description}</p>
+                    <h3 className="font-semibold text-white text-sm sm:text-base mb-1">{benefit.title}</h3>
+                    <p className="text-xs sm:text-sm text-gray-400">{benefit.description}</p>
                   </div>
                 ))}
               </div>
@@ -333,39 +333,43 @@ export function Recruiting() {
           </TabsContent>
 
           <TabsContent value="practice">
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {recruitingScenarios.map((scenario) => (
                 <motion.div
                   key={scenario.id}
                   whileHover={{ scale: 1.02 }}
-                  className="glass-card p-6"
+                  className="glass-card p-4 sm:p-6"
                 >
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className={cn('w-14 h-14 rounded-xl flex items-center justify-center',
+                  <div className="flex items-start gap-3 sm:gap-4 mb-4">
+                    <div className={cn('w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0',
                       scenario.id === 'recruiting_cold' ? 'bg-purple-400/10' :
                       scenario.id === 'recruiting_warm' ? 'bg-blue-400/10' : 'bg-gold-400/10'
                     )}>
-                      <scenario.icon className={cn('w-7 h-7',
+                      <scenario.icon className={cn('w-6 h-6 sm:w-7 sm:h-7',
                         scenario.id === 'recruiting_cold' ? 'text-purple-400' :
                         scenario.id === 'recruiting_warm' ? 'text-blue-400' : 'text-gold-400'
                       )} />
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-white mb-1">{scenario.title}</h3>
-                      <p className="text-gray-400">{scenario.description}</p>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <h3 className="text-base sm:text-lg font-semibold text-white">{scenario.title}</h3>
+                        <Badge
+                          variant={scenario.difficulty === 1 ? 'success' : scenario.difficulty === 2 ? 'warning' : 'danger'}
+                          size="sm"
+                          className="flex-shrink-0"
+                        >
+                          {scenario.difficulty === 1 ? 'Easy' : scenario.difficulty === 2 ? 'Medium' : 'Hard'}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-gray-400">{scenario.description}</p>
                     </div>
-                    <Badge
-                      variant={scenario.difficulty === 1 ? 'success' : scenario.difficulty === 2 ? 'warning' : 'danger'}
-                    >
-                      {scenario.difficulty === 1 ? 'Easy' : scenario.difficulty === 2 ? 'Medium' : 'Hard'}
-                    </Badge>
                   </div>
 
                   <div className="mb-4">
                     <h4 className="text-sm font-medium text-gray-400 mb-2">Key Tips</h4>
                     <ul className="space-y-2">
                       {scenario.tips.map((tip, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
+                        <li key={i} className="flex items-start gap-2 text-xs sm:text-sm text-gray-300">
                           <Star className="w-3 h-3 text-gold-400 mt-1 flex-shrink-0" />
                           {tip}
                         </li>
@@ -384,25 +388,25 @@ export function Recruiting() {
           </TabsContent>
 
           <TabsContent value="talking-points">
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {recruitingTalkingPoints.map((point) => (
                 <Card key={point.id} padding="lg">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center', point.bgColor)}>
-                      <point.icon className={cn('w-6 h-6', point.color)} />
+                  <div className="flex items-start gap-3 sm:gap-4 mb-4">
+                    <div className={cn('w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0', point.bgColor)}>
+                      <point.icon className={cn('w-5 h-5 sm:w-6 sm:h-6', point.color)} />
                     </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-white">{point.title}</h3>
-                      <p className="text-gold-400 font-medium">{point.mainPoint}</p>
+                    <div className="min-w-0">
+                      <h3 className="text-base sm:text-lg font-semibold text-white">{point.title}</h3>
+                      <p className="text-sm sm:text-base text-gold-400 font-medium">{point.mainPoint}</p>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                     <div>
-                      <h4 className="text-sm font-medium text-gray-400 mb-3">Supporting Points</h4>
+                      <h4 className="text-sm font-medium text-gray-400 mb-2 sm:mb-3">Supporting Points</h4>
                       <ul className="space-y-2">
                         {point.supportingPoints.map((sp, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
+                          <li key={i} className="flex items-start gap-2 text-xs sm:text-sm text-gray-300">
                             <CheckCircle className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
                             {sp}
                           </li>
@@ -411,11 +415,11 @@ export function Recruiting() {
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-medium text-gray-400 mb-3">Objection Handlers</h4>
-                      <div className="space-y-3">
+                      <h4 className="text-sm font-medium text-gray-400 mb-2 sm:mb-3">Objection Handlers</h4>
+                      <div className="space-y-2 sm:space-y-3">
                         {point.objectionHandlers.map((handler, i) => (
-                          <div key={i} className="p-3 rounded-xl bg-apex-700/30 border border-apex-500/30">
-                            <p className="text-sm text-gray-300">{handler}</p>
+                          <div key={i} className="p-2 sm:p-3 rounded-xl bg-apex-700/30 border border-apex-500/30">
+                            <p className="text-xs sm:text-sm text-gray-300">{handler}</p>
                           </div>
                         ))}
                       </div>
