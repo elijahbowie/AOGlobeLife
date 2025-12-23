@@ -1,6 +1,9 @@
 import type { ChatMessage, ProspectPersona, ScenarioType, SessionFeedback } from '../types';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// In production (Cloudflare Workers), use relative URLs (same origin)
+// In development, use localhost:3001
+const API_BASE = import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD ? '' : 'http://localhost:3001');
 const DEFAULT_TIMEOUT = 30000; // 30 seconds
 
 // Custom error class for API errors
