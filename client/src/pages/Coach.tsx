@@ -104,9 +104,12 @@ export function Coach() {
 
   // Handle scenario selection from URL
   useEffect(() => {
-    if (scenarioId && !activeScenario) {
+    // Start scenario if URL has scenarioId and either:
+    // 1. No active scenario, OR
+    // 2. Active scenario is different from URL (user navigated to a different scenario)
+    if (scenarioId) {
       const scenario = getScenarioById(scenarioId as ScenarioType);
-      if (scenario) {
+      if (scenario && (!activeScenario || activeScenario.id !== scenarioId)) {
         handleStartScenario(scenarioId as ScenarioType);
       }
     }
@@ -127,16 +130,20 @@ export function Coach() {
     updateSkillProgress('presentation', 5);
     updateSkillProgress('objection-handling', 3);
 
+    // Navigate first to prevent useEffect from restarting scenario
+    navigate('/coach');
+    // Then clear state
     endScenario();
     setSessionTime(0);
-    navigate('/coach');
   };
 
   // Cancel scenario without awarding XP (back button)
   const handleCancelScenario = () => {
+    // Navigate first to prevent useEffect from restarting scenario
+    navigate('/coach');
+    // Then clear state
     endScenario();
     setSessionTime(0);
-    navigate('/coach');
   };
 
   const handleSendMessage = async () => {
