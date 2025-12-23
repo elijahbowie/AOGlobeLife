@@ -63,23 +63,23 @@ export function Scripts() {
         subtitle="Master your pitch with proven scripts"
       />
 
-      <div className="p-6">
-        {/* Quick Actions */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <Button
-              onClick={() => setShowBuilder(true)}
-              icon={<Wand2 className="w-4 h-4" />}
-            >
-              Smart Script Builder
-            </Button>
-            <Button
-              variant="secondary"
-              icon={<Plus className="w-4 h-4" />}
-            >
-              Create Custom Script
-            </Button>
-          </div>
+      <div className="p-3 sm:p-6">
+        {/* Quick Actions - responsive: stack on mobile */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4 sm:mb-6">
+          <Button
+            onClick={() => setShowBuilder(true)}
+            icon={<Wand2 className="w-4 h-4" />}
+            className="w-full sm:w-auto"
+          >
+            Smart Script Builder
+          </Button>
+          <Button
+            variant="secondary"
+            icon={<Plus className="w-4 h-4" />}
+            className="w-full sm:w-auto"
+          >
+            Create Custom Script
+          </Button>
         </div>
 
         <ScriptsList scripts={scripts} />
@@ -122,7 +122,7 @@ function ScriptsList({ scripts }: { scripts: Script[] }) {
   return (
     <div>
       {/* Search and Filter */}
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
         <div className="flex-1">
           <Input
             placeholder="Search scripts..."
@@ -133,14 +133,14 @@ function ScriptsList({ scripts }: { scripts: Script[] }) {
         </div>
       </div>
 
-      {/* Category Tabs */}
-      <div className="flex items-center gap-2 mb-6 overflow-x-auto scrollbar-hide pb-2">
+      {/* Category Tabs - horizontal scroll on mobile */}
+      <div className="flex items-center gap-2 mb-4 sm:mb-6 overflow-x-auto scrollbar-hide pb-2 -mx-3 px-3 sm:mx-0 sm:px-0">
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setCategoryFilter(cat)}
             className={cn(
-              'px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all duration-200',
+              'px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-sm sm:text-base font-medium whitespace-nowrap transition-all duration-200',
               categoryFilter === cat
                 ? 'bg-gold-400/10 text-gold-400 border border-gold-400/30'
                 : 'text-gray-400 hover:text-white hover:bg-apex-700/50'
@@ -151,8 +151,8 @@ function ScriptsList({ scripts }: { scripts: Script[] }) {
         ))}
       </div>
 
-      {/* Scripts Grid */}
-      <div className="grid grid-cols-2 gap-4">
+      {/* Scripts Grid - 1 col mobile, 2 cols tablet+ */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         {filteredScripts.map((script) => (
           <ScriptCard key={script.id} script={script} />
         ))}
@@ -183,15 +183,15 @@ function ScriptCard({ script }: { script: Script }) {
     <motion.div
       whileHover={{ scale: 1.01 }}
       onClick={() => navigate(`/scripts/${script.id}`)}
-      className="glass-card p-5 cursor-pointer border-2 border-transparent hover:border-gold-400/30 transition-all duration-200"
+      className="glass-card p-3 sm:p-5 cursor-pointer border-2 border-transparent hover:border-gold-400/30 transition-all duration-200"
     >
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-apex-700/50 flex items-center justify-center">
-            <FileText className="w-5 h-5 text-gold-400" />
+      <div className="flex items-start justify-between mb-2 sm:mb-3">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-apex-700/50 flex items-center justify-center flex-shrink-0">
+            <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-gold-400" />
           </div>
-          <div>
-            <h3 className="font-semibold text-white">{script.title}</h3>
+          <div className="min-w-0">
+            <h3 className="font-semibold text-white text-sm sm:text-base truncate">{script.title}</h3>
             <Badge
               variant="default"
               className={categoryColors[script.category]}
@@ -204,7 +204,7 @@ function ScriptCard({ script }: { script: Script }) {
 
         <button
           onClick={handleCopy}
-          className="p-2 rounded-lg hover:bg-apex-600/50 transition-colors"
+          className="p-1.5 sm:p-2 rounded-lg hover:bg-apex-600/50 transition-colors flex-shrink-0"
         >
           {copied ? (
             <CheckCircle className="w-4 h-4 text-emerald-400" />
@@ -214,13 +214,13 @@ function ScriptCard({ script }: { script: Script }) {
         </button>
       </div>
 
-      <p className="text-sm text-gray-400 line-clamp-2 mb-3">{script.description}</p>
+      <p className="text-xs sm:text-sm text-gray-400 line-clamp-2 mb-2 sm:mb-3">{script.description}</p>
 
-      <div className="flex items-center flex-wrap gap-2 mb-3">
+      <div className="flex items-center flex-wrap gap-1.5 sm:gap-2 mb-2 sm:mb-3">
         {script.tags.slice(0, 3).map((tag) => (
           <span
             key={tag}
-            className="px-2 py-0.5 rounded-md bg-apex-700/50 text-xs text-gray-400"
+            className="px-1.5 sm:px-2 py-0.5 rounded-md bg-apex-700/50 text-xs text-gray-400"
           >
             {tag}
           </span>
@@ -256,34 +256,37 @@ function ScriptDetail({ script, onBack }: { script: Script; onBack: () => void }
   return (
     <div className="min-h-screen pb-8">
       {/* Header */}
-      <div className="h-16 bg-apex-800/80 backdrop-blur-xl border-b border-apex-600/50 flex items-center justify-between px-6">
+      <div className="h-14 sm:h-16 bg-apex-800/80 backdrop-blur-xl border-b border-apex-600/50 flex items-center justify-between px-3 sm:px-6">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+          className="flex items-center gap-1 sm:gap-2 text-gray-400 hover:text-white transition-colors"
         >
           <ChevronLeft className="w-5 h-5" />
-          <span>Back to Scripts</span>
+          <span className="hidden sm:inline">Back to Scripts</span>
+          <span className="sm:hidden">Back</span>
         </button>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Button
             variant="secondary"
             size="sm"
             onClick={handleCopy}
             icon={copied ? <CheckCircle className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+            className="text-xs sm:text-sm"
           >
-            {copied ? 'Copied!' : 'Copy Script'}
+            <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy Script'}</span>
+            <span className="sm:hidden">{copied ? 'Copied' : 'Copy'}</span>
           </Button>
-          <Button size="sm" icon={<Edit3 className="w-4 h-4" />}>
+          <Button size="sm" icon={<Edit3 className="w-4 h-4" />} className="text-xs sm:text-sm">
             Edit
           </Button>
         </div>
       </div>
 
-      <div className="p-6">
-        <div className="grid grid-cols-3 gap-6">
+      <div className="p-3 sm:p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Main Content */}
-          <div className="col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             {/* Script Header */}
             <Card padding="lg">
               <div className="flex items-start gap-4 mb-6">
@@ -380,7 +383,7 @@ function ScriptDetail({ script, onBack }: { script: Script; onBack: () => void }
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Stats */}
             <Card padding="lg">
               <CardHeader>

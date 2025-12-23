@@ -66,9 +66,9 @@ export function Leaderboard() {
         subtitle="Track your progress and compete"
       />
 
-      <div className="p-6">
+      <div className="p-3 sm:p-6">
         <Tabs defaultValue="leaderboard" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="mb-6">
+          <TabsList className="mb-4 sm:mb-6">
             <TabsTrigger value="leaderboard" icon={<Trophy className="w-4 h-4" />}>
               Leaderboard
             </TabsTrigger>
@@ -78,9 +78,9 @@ export function Leaderboard() {
           </TabsList>
 
           <TabsContent value="leaderboard">
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
               {/* Main Leaderboard */}
-              <div className="col-span-2">
+              <div className="lg:col-span-2">
                 <Card padding="none">
                   {/* Top 3 Podium */}
                   <div className="p-6 border-b border-apex-600/50">
@@ -182,7 +182,7 @@ export function Leaderboard() {
               </div>
 
               {/* Sidebar */}
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Your Stats */}
                 <Card padding="lg" glow>
                   <CardHeader>
@@ -314,8 +314,8 @@ function AchievementsView({
 
   return (
     <div>
-      {/* Progress Overview */}
-      <div className="grid grid-cols-5 gap-4 mb-6">
+      {/* Progress Overview - responsive: 2-3 cols mobile, 5 cols desktop */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-4 sm:mb-6">
         {categories.slice(1).map((cat) => {
           const catAchievements = getAchievementsByCategory(cat as any);
           const earned = catAchievements.filter(a => earnedIds.has(a.id)).length;
@@ -341,29 +341,31 @@ function AchievementsView({
         })}
       </div>
 
-      {/* Filter */}
-      <div className="flex items-center gap-2 mb-6">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setCategoryFilter(cat)}
-            className={cn(
-              'px-4 py-2 rounded-xl font-medium transition-all duration-200',
-              categoryFilter === cat
-                ? 'bg-gold-400/10 text-gold-400 border border-gold-400/30'
-                : 'text-gray-400 hover:text-white hover:bg-apex-700/50'
-            )}
-          >
-            {categoryLabels[cat]}
-          </button>
-        ))}
-        <div className="ml-auto text-sm text-gray-400">
+      {/* Filter - horizontal scroll on mobile */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-2 mb-4 sm:mb-6">
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-2 sm:pb-0 -mx-3 px-3 sm:mx-0 sm:px-0">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setCategoryFilter(cat)}
+              className={cn(
+                'px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-sm sm:text-base font-medium whitespace-nowrap transition-all duration-200',
+                categoryFilter === cat
+                  ? 'bg-gold-400/10 text-gold-400 border border-gold-400/30'
+                  : 'text-gray-400 hover:text-white hover:bg-apex-700/50'
+              )}
+            >
+              {categoryLabels[cat]}
+            </button>
+          ))}
+        </div>
+        <div className="sm:ml-auto text-xs sm:text-sm text-gray-400">
           {earnedInCategory} / {filteredAchievements.length} earned
         </div>
       </div>
 
-      {/* Achievements Grid */}
-      <div className="grid grid-cols-4 gap-4">
+      {/* Achievements Grid - 2 cols mobile, 3 cols tablet, 4 cols desktop */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {filteredAchievements.map((achievement) => {
           const isEarned = earnedIds.has(achievement.id);
 

@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
   MessageSquare,
@@ -12,11 +12,17 @@ import {
   ChevronRight,
   Flame,
   Zap,
+  X,
 } from 'lucide-react';
 import { useUserStore } from '../../stores';
 import { getRankById } from '../../data/ranks';
 import { formatXP } from '../../utils/formatters';
 import { cn } from '../../utils/cn';
+
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
 const navigation = [
   {
@@ -63,7 +69,7 @@ const navigation = [
   },
 ];
 
-export function Sidebar() {
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation();
   const { user } = useUserStore();
   const rankInfo = getRankById(user.rank);
@@ -73,18 +79,32 @@ export function Sidebar() {
   const progressInLevel = user.xp - currentLevelXp;
   const levelProgress = (progressInLevel / (xpToNextLevel - currentLevelXp)) * 100;
 
-  return (
-    <aside className="fixed left-0 top-0 h-screen w-72 bg-apex-800/80 backdrop-blur-xl border-r border-apex-600/50 flex flex-col z-40">
+  // Close sidebar on navigation (mobile)
+  const handleNavClick = () => {
+    onClose();
+  };
+
+  const sidebarContent = (
+    <>
       {/* Logo & Brand */}
-      <div className="p-6 border-b border-apex-600/50">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center">
-            <Zap className="w-6 h-6 text-apex-900" />
+      <div className="p-4 sm:p-6 border-b border-apex-600/50">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center">
+              <Zap className="w-6 h-6 text-apex-900" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-white">Apex Academy</h1>
+              <p className="text-xs text-gray-400">Sales Training Platform</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-bold text-white">Apex Academy</h1>
-            <p className="text-xs text-gray-400">Sales Training Platform</p>
-          </div>
+          {/* Close button - only visible on mobile */}
+          <button
+            onClick={onClose}
+            className="lg:hidden p-2 rounded-xl bg-apex-700/50 text-gray-400 hover:text-white hover:bg-apex-700 transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
       </div>
 
@@ -145,6 +165,7 @@ export function Sidebar() {
             <NavLink
               key={item.path}
               to={item.path}
+              onClick={handleNavClick}
               className={cn(
                 'group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200',
                 isActive
@@ -173,6 +194,7 @@ export function Sidebar() {
       <div className="p-4 border-t border-apex-600/50">
         <NavLink
           to="/settings"
+          onClick={handleNavClick}
           className={cn(
             'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200',
             location.pathname === '/settings'
@@ -184,6 +206,41 @@ export function Sidebar() {
           <span className="font-medium">Settings</span>
         </NavLink>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop sidebar - always visible on lg+ */}
+      <aside className="hidden lg:flex fixed left-0 top-0 h-screen w-72 bg-apex-800/80 backdrop-blur-xl border-r border-apex-600/50 flex-col z-40">
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile sidebar - overlay with backdrop */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={onClose}
+              className="lg:hidden fixed inset-0 bg-apex-900/80 backdrop-blur-sm z-40"
+            />
+            {/* Sidebar */}
+            <motion.aside
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              className="lg:hidden fixed left-0 top-0 h-screen w-72 max-w-[85vw] bg-apex-800 border-r border-apex-600/50 flex flex-col z-50"
+            >
+              {sidebarContent}
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

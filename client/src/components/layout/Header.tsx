@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Bell,
@@ -10,6 +11,7 @@ import {
   Clock,
   Lightbulb,
   Zap,
+  Menu,
 } from 'lucide-react';
 import { useUserStore } from '../../stores';
 import { formatRelativeTime } from '../../utils/formatters';
@@ -20,10 +22,18 @@ interface HeaderProps {
   subtitle?: string;
 }
 
+interface LayoutContext {
+  openSidebar: () => void;
+}
+
 export function Header({ title, subtitle }: HeaderProps) {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Get sidebar control from layout context (may be undefined if not in layout)
+  const context = useOutletContext<LayoutContext | undefined>();
+  const openSidebar = context?.openSidebar;
 
   const { user, notifications, markNotificationRead, markAllNotificationsRead } = useUserStore();
   const unreadCount = notifications.filter((n) => !n.read).length;
@@ -44,19 +54,33 @@ export function Header({ title, subtitle }: HeaderProps) {
   };
 
   return (
-    <header className="h-16 bg-apex-800/50 backdrop-blur-xl border-b border-apex-600/50 flex items-center justify-between px-6 sticky top-0 z-30">
-      {/* Page Title */}
-      <div>
-        <h1 className="text-xl font-bold text-white">{title}</h1>
-        {subtitle && <p className="text-sm text-gray-400">{subtitle}</p>}
+    <header className="h-14 sm:h-16 bg-apex-800/50 backdrop-blur-xl border-b border-apex-600/50 flex items-center justify-between px-3 sm:px-6 sticky top-0 z-30">
+      {/* Left side - Menu button and title */}
+      <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+        {/* Mobile menu button */}
+        {openSidebar && (
+          <button
+            onClick={openSidebar}
+            className="lg:hidden p-2 rounded-xl bg-apex-700/50 text-gray-400 hover:text-white hover:bg-apex-700 transition-colors flex-shrink-0"
+            aria-label="Open menu"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+        )}
+
+        {/* Page Title */}
+        <div className="min-w-0">
+          <h1 className="text-base sm:text-xl font-bold text-white truncate">{title}</h1>
+          {subtitle && <p className="text-xs sm:text-sm text-gray-400 truncate hidden sm:block">{subtitle}</p>}
+        </div>
       </div>
 
       {/* Right Actions */}
-      <div className="flex items-center gap-4">
-        {/* Streak Badge */}
+      <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+        {/* Streak Badge - hide on very small screens */}
         {user.streak > 0 && (
           <motion.div
-            className="streak-fire"
+            className="streak-fire hidden xs:flex"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
           >
@@ -98,7 +122,7 @@ export function Header({ title, subtitle }: HeaderProps) {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute right-0 top-full mt-2 w-80 bg-apex-700 border border-apex-500 rounded-xl shadow-xl z-50 overflow-hidden"
+                  className="absolute right-0 top-full mt-2 w-[calc(100vw-1.5rem)] sm:w-80 max-w-80 bg-apex-700 border border-apex-500 rounded-xl shadow-xl z-50 overflow-hidden"
                 >
                   <div className="flex items-center justify-between p-4 border-b border-apex-600">
                     <h3 className="font-semibold text-white">Notifications</h3>
@@ -165,7 +189,7 @@ export function Header({ title, subtitle }: HeaderProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-apex-900/80 backdrop-blur-sm z-50 flex items-start justify-center pt-24"
+            className="fixed inset-0 bg-apex-900/80 backdrop-blur-sm z-50 flex items-start justify-center pt-4 sm:pt-24 px-3 sm:px-4"
             onClick={() => setShowSearch(false)}
           >
             <motion.div

@@ -45,7 +45,7 @@ export function Products() {
         subtitle="Master AIL's product portfolio"
       />
 
-      <div className="p-6">
+      <div className="p-3 sm:p-6">
         <ProductList products={products} />
       </div>
     </div>
@@ -71,11 +71,11 @@ function ProductList({ products }: { products: Product[] }) {
         onChange={setFilter}
         labels={categoryLabels}
         allLabel="All Products"
-        className="mb-6"
+        className="mb-4 sm:mb-6"
       />
 
-      {/* Products Grid */}
-      <div className="grid grid-cols-3 gap-6">
+      {/* Products Grid - 1 col mobile, 2 cols tablet, 3 cols desktop */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
         {filteredProducts.map((product) => {
           const progress = productProgress[product.id];
           const mastery = progress?.mastery || 0;
@@ -84,13 +84,13 @@ function ProductList({ products }: { products: Product[] }) {
             <Link key={product.id} to={`/products/${product.id}`}>
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="glass-card p-6 h-full border-2 border-transparent hover:border-gold-400/30 transition-all duration-200"
+                className="glass-card p-4 sm:p-6 h-full border-2 border-transparent hover:border-gold-400/30 transition-all duration-200"
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="text-4xl">{product.icon}</div>
+                <div className="flex items-start justify-between mb-3 sm:mb-4">
+                  <div className="text-3xl sm:text-4xl">{product.icon}</div>
                   <CircularProgress
                     value={mastery}
-                    size={48}
+                    size={40}
                     strokeWidth={4}
                     label={
                       <span className="text-xs font-bold text-white">{mastery}%</span>
@@ -98,15 +98,15 @@ function ProductList({ products }: { products: Product[] }) {
                   />
                 </div>
 
-                <h3 className="font-semibold text-white mb-1">{product.name}</h3>
-                <p className="text-sm text-gray-400 mb-4 line-clamp-2">{product.description}</p>
+                <h3 className="font-semibold text-white text-sm sm:text-base mb-1">{product.name}</h3>
+                <p className="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 line-clamp-2">{product.description}</p>
 
-                <Badge variant={mastery >= 80 ? 'success' : mastery >= 40 ? 'warning' : 'default'}>
+                <Badge variant={mastery >= 80 ? 'success' : mastery >= 40 ? 'warning' : 'default'} size="sm">
                   {categoryLabels[product.category]}
                 </Badge>
 
                 {progress && (
-                  <div className="mt-4 pt-4 border-t border-apex-600/50">
+                  <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-apex-600/50">
                     <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
                       <span>Modules: {progress.modulesCompleted}/{progress.totalModules}</span>
                       {progress.quizPassed && (
@@ -119,7 +119,7 @@ function ProductList({ products }: { products: Product[] }) {
                   </div>
                 )}
 
-                <div className="flex items-center justify-end mt-4 text-gold-400 text-sm">
+                <div className="flex items-center justify-end mt-3 sm:mt-4 text-gold-400 text-sm">
                   <span>Learn More</span>
                   <ChevronRight className="w-4 h-4" />
                 </div>
@@ -146,55 +146,67 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
   return (
     <div className="min-h-screen pb-8">
       {/* Header */}
-      <div className="h-16 bg-apex-800/80 backdrop-blur-xl border-b border-apex-600/50 flex items-center px-6">
+      <div className="h-14 sm:h-16 bg-apex-800/80 backdrop-blur-xl border-b border-apex-600/50 flex items-center px-3 sm:px-6">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+          className="flex items-center gap-1 sm:gap-2 text-gray-400 hover:text-white transition-colors"
         >
           <ChevronLeft className="w-5 h-5" />
-          <span>Back to Products</span>
+          <span className="hidden sm:inline">Back to Products</span>
+          <span className="sm:hidden">Back</span>
         </button>
       </div>
 
-      <div className="p-6">
-        {/* Product Header */}
-        <div className="flex items-start gap-6 mb-8">
-          <div className="text-6xl">{product.icon}</div>
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-2xl font-bold text-white">{product.name}</h1>
-              <Badge variant="gold">{categoryLabels[product.category]}</Badge>
+      <div className="p-3 sm:p-6">
+        {/* Product Header - responsive */}
+        <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="flex items-center gap-4 sm:block">
+            <div className="text-4xl sm:text-6xl">{product.icon}</div>
+            <div className="sm:hidden">
+              <CircularProgress
+                value={progress?.mastery || 0}
+                size={60}
+                strokeWidth={6}
+              />
             </div>
-            <p className="text-gray-400 mb-4">{product.description}</p>
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+              <h1 className="text-xl sm:text-2xl font-bold text-white">{product.name}</h1>
+              <Badge variant="gold" size="sm">{categoryLabels[product.category]}</Badge>
+            </div>
+            <p className="text-sm sm:text-base text-gray-400 mb-3 sm:mb-4">{product.description}</p>
 
-            {/* Progress Overview */}
-            <div className="flex items-center gap-6">
+            {/* Progress Overview - responsive */}
+            <div className="flex flex-wrap items-center gap-3 sm:gap-6">
               <div className="flex items-center gap-2">
                 <BookOpen className="w-4 h-4 text-gray-500" />
-                <span className="text-sm text-gray-400">
+                <span className="text-xs sm:text-sm text-gray-400">
                   {progress?.modulesCompleted || 0}/{modules.length} Modules
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Trophy className="w-4 h-4 text-gray-500" />
-                <span className="text-sm text-gray-400">
+                <span className="text-xs sm:text-sm text-gray-400">
                   Quiz: {progress?.quizPassed ? 'Passed' : 'Not taken'}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Target className="w-4 h-4 text-gray-500" />
-                <span className="text-sm text-gray-400">
+                <span className="text-xs sm:text-sm text-gray-400">
                   {progress?.mastery || 0}% Mastery
                 </span>
               </div>
             </div>
           </div>
 
-          <CircularProgress
-            value={progress?.mastery || 0}
-            size={100}
-            strokeWidth={8}
-          />
+          <div className="hidden sm:block">
+            <CircularProgress
+              value={progress?.mastery || 0}
+              size={100}
+              strokeWidth={8}
+            />
+          </div>
         </div>
 
         {/* Tabs */}
@@ -212,9 +224,9 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
           </TabsList>
 
           <TabsContent value="learn">
-            <div className="grid grid-cols-4 gap-6">
-              {/* Module Navigation */}
-              <div className="space-y-2">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
+              {/* Module Navigation - horizontal scroll on mobile, vertical on lg+ */}
+              <div className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 -mx-3 px-3 lg:mx-0 lg:px-0 scrollbar-hide lg:space-y-2">
                 {modules.map((module, index) => {
                   const isCompleted = progress && progress.modulesCompleted > index;
                   const isCurrent = index === currentModuleIndex;
@@ -224,14 +236,14 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
                       key={module.id}
                       onClick={() => setCurrentModuleIndex(index)}
                       className={cn(
-                        'w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all duration-200',
+                        'flex items-center gap-2 lg:gap-3 p-2 lg:p-3 rounded-xl text-left transition-all duration-200 whitespace-nowrap lg:whitespace-normal lg:w-full flex-shrink-0 lg:flex-shrink',
                         isCurrent
                           ? 'bg-gold-400/10 border border-gold-400/30'
                           : 'hover:bg-apex-700/50 border border-transparent'
                       )}
                     >
                       <div className={cn(
-                        'w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0',
+                        'w-7 h-7 lg:w-8 lg:h-8 rounded-full flex items-center justify-center flex-shrink-0',
                         isCompleted
                           ? 'bg-emerald-400/20'
                           : isCurrent
@@ -239,10 +251,10 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
                           : 'bg-apex-600'
                       )}>
                         {isCompleted ? (
-                          <CheckCircle className="w-4 h-4 text-emerald-400" />
+                          <CheckCircle className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-emerald-400" />
                         ) : (
                           <span className={cn(
-                            'text-sm font-medium',
+                            'text-xs lg:text-sm font-medium',
                             isCurrent ? 'text-gold-400' : 'text-gray-400'
                           )}>
                             {index + 1}
@@ -250,7 +262,7 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
                         )}
                       </div>
                       <span className={cn(
-                        'text-sm font-medium truncate',
+                        'text-xs lg:text-sm font-medium lg:truncate',
                         isCurrent ? 'text-gold-400' : 'text-gray-300'
                       )}>
                         {module.title}
@@ -261,21 +273,21 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
               </div>
 
               {/* Module Content */}
-              <div className="col-span-3">
+              <div className="lg:col-span-3">
                 <Card padding="lg">
-                  <h2 className="text-xl font-bold text-white mb-4">{currentModule.title}</h2>
-                  <div className="prose prose-invert max-w-none mb-6">
-                    <p className="text-gray-300 leading-relaxed whitespace-pre-line">
+                  <h2 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">{currentModule.title}</h2>
+                  <div className="prose prose-invert max-w-none mb-4 sm:mb-6">
+                    <p className="text-sm sm:text-base text-gray-300 leading-relaxed whitespace-pre-line">
                       {currentModule.content}
                     </p>
                   </div>
 
                   {/* Key Points */}
-                  <div className="mb-6">
-                    <h3 className="text-sm font-medium text-gold-400 mb-3 uppercase tracking-wider">
+                  <div className="mb-4 sm:mb-6">
+                    <h3 className="text-xs sm:text-sm font-medium text-gold-400 mb-2 sm:mb-3 uppercase tracking-wider">
                       Key Points
                     </h3>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                       {currentModule.keyPoints.map((point, i) => (
                         <div
                           key={i}
@@ -355,7 +367,7 @@ function ProductDetail({ product, onBack }: { product: Product; onBack: () => vo
           </TabsContent>
 
           <TabsContent value="reference">
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {/* Key Features */}
               <Card padding="lg">
                 <CardHeader>

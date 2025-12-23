@@ -218,20 +218,20 @@ export function Coach() {
           subtitle="Practice real-world sales scenarios"
         />
 
-        <div className="p-6">
-          <div className="mb-8">
-            <h2 className="text-lg font-semibold text-white mb-2">Choose a Scenario</h2>
-            <p className="text-gray-400">
+        <div className="p-3 sm:p-6">
+          <div className="mb-6 sm:mb-8">
+            <h2 className="text-base sm:text-lg font-semibold text-white mb-2">Choose a Scenario</h2>
+            <p className="text-sm sm:text-base text-gray-400">
               Select a scenario to practice with a realistic prospect powered by advanced coaching technology.
             </p>
           </div>
 
           {/* Sales Scenarios */}
-          <div className="mb-8">
-            <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-4">
+          <div className="mb-6 sm:mb-8">
+            <h3 className="text-xs sm:text-sm font-medium text-gray-400 uppercase tracking-wider mb-3 sm:mb-4">
               Sales Scenarios
             </h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {scenarios
                 .filter((s) => s.category === 'sales')
                 .map((scenario) => (
@@ -248,10 +248,10 @@ export function Coach() {
 
           {/* Recruiting Scenarios */}
           <div>
-            <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-4">
+            <h3 className="text-xs sm:text-sm font-medium text-gray-400 uppercase tracking-wider mb-3 sm:mb-4">
               Recruiting Scenarios
             </h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {scenarios
                 .filter((s) => s.category === 'recruiting')
                 .map((scenario) => (
@@ -273,51 +273,53 @@ export function Coach() {
   // Active scenario chat interface
   return (
     <div className="h-screen flex flex-col">
-      {/* Chat Header */}
-      <div className="h-16 bg-apex-800/80 backdrop-blur-xl border-b border-apex-600/50 flex items-center justify-between px-6 flex-shrink-0">
-        <div className="flex items-center gap-4">
+      {/* Chat Header - responsive */}
+      <div className="h-14 sm:h-16 bg-apex-800/80 backdrop-blur-xl border-b border-apex-600/50 flex items-center justify-between px-3 sm:px-6 flex-shrink-0">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           <button
             onClick={handleEndScenario}
-            className="p-2 rounded-xl bg-apex-700/50 text-gray-400 hover:text-white hover:bg-apex-700 transition-colors"
+            className="p-2 rounded-xl bg-apex-700/50 text-gray-400 hover:text-white hover:bg-apex-700 transition-colors flex-shrink-0"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <div className="flex items-center gap-3">
-            <Avatar name={activePersona!.name} size="md" />
-            <div>
-              <h2 className="font-semibold text-white">{activePersona!.name}</h2>
-              <p className="text-xs text-gray-400">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <Avatar name={activePersona!.name} size="sm" className="flex-shrink-0 hidden sm:flex" />
+            <div className="min-w-0">
+              <h2 className="font-semibold text-white text-sm sm:text-base truncate">{activePersona!.name}</h2>
+              <p className="text-xs text-gray-400 truncate hidden sm:block">
                 {activePersona!.occupation} • {activeScenario.name}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
           {/* Timer */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-apex-700/50 text-gray-300">
+          <div className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 rounded-lg bg-apex-700/50 text-gray-300">
             <Clock className="w-4 h-4" />
-            <span className="font-mono text-sm">{formatTime(sessionTime)}</span>
+            <span className="font-mono text-xs sm:text-sm">{formatTime(sessionTime)}</span>
           </div>
 
-          {/* Hint Button */}
+          {/* Hint Button - icon only on mobile */}
           <Button
             variant="ghost"
             size="sm"
             onClick={requestHint}
             icon={<Lightbulb className="w-4 h-4" />}
+            className="px-2 sm:px-3"
           >
-            Hint
+            <span className="hidden sm:inline">Hint</span>
           </Button>
 
-          {/* Reset Button */}
+          {/* Reset Button - hidden on very small screens */}
           <Button
             variant="ghost"
             size="sm"
             onClick={resetChat}
             icon={<RotateCcw className="w-4 h-4" />}
+            className="hidden xs:flex px-2 sm:px-3"
           >
-            Reset
+            <span className="hidden sm:inline">Reset</span>
           </Button>
 
           {/* End Session */}
@@ -325,8 +327,10 @@ export function Coach() {
             variant="secondary"
             size="sm"
             onClick={handleEndScenario}
+            className="text-xs sm:text-sm"
           >
-            End Session
+            <span className="hidden sm:inline">End Session</span>
+            <span className="sm:hidden">End</span>
           </Button>
         </div>
       </div>
@@ -335,7 +339,7 @@ export function Coach() {
         {/* Chat Area */}
         <div className="flex-1 flex flex-col">
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-6 space-y-3 sm:space-y-4">
             {/* Scenario Context */}
             <div className="text-center py-4">
               <Badge variant="info" size="lg">
@@ -401,7 +405,7 @@ export function Coach() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
-                className="mx-6 mb-4"
+                className="mx-3 sm:mx-6 mb-4"
               >
                 <div className="flex items-start gap-3 p-4 rounded-xl bg-gold-400/10 border border-gold-400/30">
                   <Lightbulb className="w-5 h-5 text-gold-400 flex-shrink-0 mt-0.5" />
@@ -421,8 +425,8 @@ export function Coach() {
           </AnimatePresence>
 
           {/* Input Area */}
-          <div className="p-4 border-t border-apex-600/50 bg-apex-800/50 backdrop-blur-xl">
-            <div className="flex items-end gap-4">
+          <div className="p-3 sm:p-4 border-t border-apex-600/50 bg-apex-800/50 backdrop-blur-xl">
+            <div className="flex items-end gap-2 sm:gap-4">
               <div className="flex-1">
                 <textarea
                   value={inputValue}
@@ -435,22 +439,23 @@ export function Coach() {
                   }}
                   placeholder="Type your response..."
                   rows={2}
-                  className="w-full bg-apex-700/50 border border-apex-500 rounded-xl px-4 py-3 text-gray-100 placeholder-apex-300 focus:outline-none focus:border-gold-400/50 focus:ring-2 focus:ring-gold-400/20 transition-all duration-200 resize-none"
+                  className="w-full bg-apex-700/50 border border-apex-500 rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base text-gray-100 placeholder-apex-300 focus:outline-none focus:border-gold-400/50 focus:ring-2 focus:ring-gold-400/20 transition-all duration-200 resize-none"
                 />
               </div>
               <Button
                 onClick={handleSendMessage}
                 disabled={!inputValue.trim() || isLoading || isStreaming}
                 icon={<Send className="w-4 h-4" />}
+                className="flex-shrink-0"
               >
-                Send
+                <span className="hidden sm:inline">Send</span>
               </Button>
             </div>
           </div>
         </div>
 
-        {/* Side Panel - Live Feedback */}
-        <div className="w-80 border-l border-apex-600/50 bg-apex-800/30 p-4 overflow-y-auto flex-shrink-0">
+        {/* Side Panel - Live Feedback (hidden on mobile, shown on xl+) */}
+        <div className="hidden xl:block w-72 2xl:w-80 border-l border-apex-600/50 bg-apex-800/30 p-4 overflow-y-auto flex-shrink-0">
           <h3 className="font-semibold text-white mb-4">Live Feedback</h3>
 
           <div className="space-y-4">
@@ -509,18 +514,18 @@ function MessageBubble({ message, persona }: { message: ChatMessage; persona: an
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className={cn('flex items-end gap-3', isUser && 'flex-row-reverse')}
+      className={cn('flex items-end gap-2 sm:gap-3', isUser && 'flex-row-reverse')}
     >
-      {!isUser && <Avatar name={persona.name} size="sm" />}
+      {!isUser && <Avatar name={persona.name} size="sm" className="hidden sm:flex flex-shrink-0" />}
       <div
         className={cn(
-          'max-w-[70%] rounded-2xl px-4 py-3',
+          'max-w-[85%] sm:max-w-[70%] rounded-2xl px-3 sm:px-4 py-2 sm:py-3',
           isUser
             ? 'bg-gold-400/10 border border-gold-400/20 rounded-br-md'
             : 'bg-apex-700 border border-apex-500 rounded-bl-md'
         )}
       >
-        <p className="text-gray-100 whitespace-pre-wrap">{message.content}</p>
+        <p className="text-sm sm:text-base text-gray-100 whitespace-pre-wrap">{message.content}</p>
       </div>
     </motion.div>
   );

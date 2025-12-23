@@ -118,64 +118,64 @@ export function Dashboard() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="p-6 space-y-6"
+        className="p-3 sm:p-6 space-y-4 sm:space-y-6"
       >
-        {/* Stats Row */}
-        <motion.div variants={item} className="grid grid-cols-4 gap-4">
+        {/* Stats Row - responsive: 1 col mobile, 2 cols tablet, 4 cols desktop */}
+        <motion.div variants={item} className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
           {/* Overall Mastery */}
-          <Card className="flex items-center gap-4">
+          <Card className="flex items-center gap-3 sm:gap-4">
             <CircularProgress
               value={overallMastery}
-              size={64}
-              strokeWidth={6}
+              size={56}
+              strokeWidth={5}
               label={
-                <span className="text-lg font-bold text-white">{overallMastery}%</span>
+                <span className="text-base font-bold text-white">{overallMastery}%</span>
               }
             />
-            <div>
-              <p className="text-sm text-gray-400">Overall Mastery</p>
-              <p className="text-lg font-semibold text-white">Training Score</p>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-400">Overall Mastery</p>
+              <p className="text-base sm:text-lg font-semibold text-white truncate">Training Score</p>
             </div>
           </Card>
 
           {/* XP & Level */}
-          <Card className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-purple-400/10 flex items-center justify-center">
-              <Zap className="w-7 h-7 text-purple-400" />
+          <Card className="flex items-center gap-3 sm:gap-4">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-purple-400/10 flex items-center justify-center flex-shrink-0">
+              <Zap className="w-6 h-6 sm:w-7 sm:h-7 text-purple-400" />
             </div>
-            <div>
-              <p className="text-sm text-gray-400">Level {user.level}</p>
-              <p className="text-lg font-semibold text-gold-gradient">{formatXP(user.xp)}</p>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-400">Level {user.level}</p>
+              <p className="text-base sm:text-lg font-semibold text-gold-gradient truncate">{formatXP(user.xp)}</p>
             </div>
           </Card>
 
           {/* Total Sessions */}
-          <Card className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-emerald-400/10 flex items-center justify-center">
-              <Target className="w-7 h-7 text-emerald-400" />
+          <Card className="flex items-center gap-3 sm:gap-4">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-400/10 flex items-center justify-center flex-shrink-0">
+              <Target className="w-6 h-6 sm:w-7 sm:h-7 text-emerald-400" />
             </div>
-            <div>
-              <p className="text-sm text-gray-400">Total Sessions</p>
-              <p className="text-lg font-semibold text-white">{user.stats.totalSessions}</p>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-400">Total Sessions</p>
+              <p className="text-base sm:text-lg font-semibold text-white">{user.stats.totalSessions}</p>
             </div>
           </Card>
 
           {/* Training Time */}
-          <Card className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-blue-400/10 flex items-center justify-center">
-              <Clock className="w-7 h-7 text-blue-400" />
+          <Card className="flex items-center gap-3 sm:gap-4">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-blue-400/10 flex items-center justify-center flex-shrink-0">
+              <Clock className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400" />
             </div>
-            <div>
-              <p className="text-sm text-gray-400">Training Time</p>
-              <p className="text-lg font-semibold text-white">{formatDuration(user.stats.totalTimeMinutes)}</p>
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm text-gray-400">Training Time</p>
+              <p className="text-base sm:text-lg font-semibold text-white truncate">{formatDuration(user.stats.totalTimeMinutes)}</p>
             </div>
           </Card>
         </motion.div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-3 gap-6">
+        {/* Main Content Grid - responsive: stack on mobile, 2/3 split on desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Left Column */}
-          <div className="col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             {/* Quick Actions */}
             <motion.div variants={item}>
               <Card padding="lg">
@@ -185,23 +185,23 @@ export function Dashboard() {
                     View All <ChevronRight className="w-4 h-4" />
                   </Link>
                 </CardHeader>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {quickActions.map((action) => (
                     <Link
                       key={action.path}
                       to={action.path}
-                      className="group flex items-center gap-4 p-4 rounded-xl bg-apex-700/50 border border-apex-500/50 hover:border-gold-400/30 transition-all duration-200"
+                      className="group flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-apex-700/50 border border-apex-500/50 hover:border-gold-400/30 transition-all duration-200"
                     >
-                      <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center', action.bgColor)}>
-                        <action.icon className={cn('w-6 h-6', action.color)} />
+                      <div className={cn('w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0', action.bgColor)}>
+                        <action.icon className={cn('w-5 h-5 sm:w-6 sm:h-6', action.color)} />
                       </div>
-                      <div className="flex-1">
-                        <p className="font-medium text-white group-hover:text-gold-400 transition-colors">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-white group-hover:text-gold-400 transition-colors truncate">
                           {action.title}
                         </p>
-                        <p className="text-sm text-gray-400">{action.description}</p>
+                        <p className="text-xs sm:text-sm text-gray-400 truncate">{action.description}</p>
                       </div>
-                      <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-gold-400 transition-colors" />
+                      <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-gold-400 transition-colors flex-shrink-0" />
                     </Link>
                   ))}
                 </div>
@@ -285,12 +285,12 @@ export function Dashboard() {
                     Train Now <ChevronRight className="w-4 h-4" />
                   </Link>
                 </CardHeader>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {skillProgress.slice(0, 6).map((skill) => (
-                    <div key={skill.skillId} className="p-4 rounded-xl bg-apex-700/30 border border-apex-500/30">
+                    <div key={skill.skillId} className="p-3 sm:p-4 rounded-xl bg-apex-700/30 border border-apex-500/30">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-white">{skill.skillName}</span>
-                        <span className="text-sm text-gold-400">Lvl {skill.level}</span>
+                        <span className="font-medium text-white text-sm sm:text-base truncate">{skill.skillName}</span>
+                        <span className="text-xs sm:text-sm text-gold-400 flex-shrink-0 ml-2">Lvl {skill.level}</span>
                       </div>
                       <Progress value={skill.progress} size="sm" variant="gold" />
                       <p className="text-xs text-gray-500 mt-1.5">
@@ -304,7 +304,7 @@ export function Dashboard() {
           </div>
 
           {/* Right Column */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Rank Progress Card */}
             <motion.div variants={item}>
               <Card padding="lg" glow>

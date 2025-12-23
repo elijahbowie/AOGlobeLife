@@ -64,9 +64,9 @@ export function Objections() {
         subtitle="Master difficult responses"
       />
 
-      <div className="p-6">
-        {/* Quick Actions */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
+      <div className="p-3 sm:p-6">
+        {/* Quick Actions - 1 col mobile, 3 cols desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -139,11 +139,11 @@ function ObjectionsList({ objections }: { objections: Objection[] }) {
         onChange={setFilter}
         labels={categoryLabels}
         allLabel="All Objections"
-        className="mb-6"
+        className="mb-4 sm:mb-6"
       />
 
-      {/* Grid */}
-      <div className="grid grid-cols-2 gap-4">
+      {/* Grid - 1 col mobile, 2 cols tablet+ */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         {filteredObjections.map((objection) => {
           const progress = objectionProgress[objection.id];
           const mastery = progress?.mastery || 0;
@@ -271,20 +271,21 @@ function ObjectionDetail({ objection, onBack }: { objection: Objection; onBack: 
   return (
     <div className="min-h-screen pb-8">
       {/* Header */}
-      <div className="h-16 bg-apex-800/80 backdrop-blur-xl border-b border-apex-600/50 flex items-center px-6">
+      <div className="h-14 sm:h-16 bg-apex-800/80 backdrop-blur-xl border-b border-apex-600/50 flex items-center px-3 sm:px-6">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+          className="flex items-center gap-1 sm:gap-2 text-gray-400 hover:text-white transition-colors"
         >
           <ChevronLeft className="w-5 h-5" />
-          <span>Back to Objections</span>
+          <span className="hidden sm:inline">Back to Objections</span>
+          <span className="sm:hidden">Back</span>
         </button>
       </div>
 
-      <div className="p-6">
-        <div className="grid grid-cols-3 gap-6">
+      <div className="p-3 sm:p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Main Content */}
-          <div className="col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             {/* Objection Header */}
             <Card padding="lg">
               <div className="flex items-start gap-4 mb-6">
@@ -376,7 +377,7 @@ function ObjectionDetail({ objection, onBack }: { objection: Objection; onBack: 
 
                 {/* Score Breakdown */}
                 {feedback.scoreBreakdown && (
-                  <div className="grid grid-cols-4 gap-3 mb-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4">
                     {[
                       { label: 'Empathy', value: feedback.scoreBreakdown.empathy },
                       { label: 'Objection', value: feedback.scoreBreakdown.objectionHandling },
@@ -507,7 +508,7 @@ function ObjectionDetail({ objection, onBack }: { objection: Objection; onBack: 
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Progress */}
             <Card padding="lg">
               <CardHeader>
